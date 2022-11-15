@@ -1,5 +1,9 @@
 package repository
 
+import (
+	"github.com/jmoiron/sqlx"
+)
+
 type CarList interface {
 }
 type CarItem interface {
@@ -9,6 +13,6 @@ type Repository struct {
 	CarList
 }
 
-func NewRepository() *Repository {
+func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{}
 }
