@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "github.com/lib/pq"
 	"github.com/saintvrai/Drom"
 	"github.com/saintvrai/Drom/pkg/handler"
 	"github.com/saintvrai/Drom/pkg/repository"
@@ -16,7 +17,7 @@ func main() {
 	}
 	db, err := repository.NewPostgresDB(repository.Config{
 		Host:     "localhost",
-		Port:     "5436",
+		Port:     "5432",
 		Username: "postgres",
 		Password: "qwerty",
 		DBName:   "postgres",
