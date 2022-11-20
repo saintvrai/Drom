@@ -1,10 +1,19 @@
 package handler
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	"net/http"
+)
 
 func (h *Handler) createList(c *gin.Context) {
+	userCtx :=
+	id, ok := c.Get(userCtx)
 
-}
+	if !ok {
+		newErrorResponse(c, http.StatusInternalServerError, "user not found")
+		return
+	}
+	var input }
 func (h *Handler) getAllLists(c *gin.Context) {
 
 }
