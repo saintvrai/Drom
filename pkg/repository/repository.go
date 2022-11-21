@@ -16,5 +16,7 @@ type Repository struct {
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
-	return &Repository{CarList: NewCarsListPostgres(db)}
+	return &Repository{
+		CarList: NewCarsListPostgres(db),
+	}
 }

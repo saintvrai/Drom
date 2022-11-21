@@ -16,5 +16,7 @@ type Service struct {
 }
 
 func NewService(repos *repository.Repository) *Service {
-	return &Service{CarList: NewCarsListService(repos.CarList)}
+	return &Service{
+		CarList: NewCarsListService(repos.CarList),
+	}
 }

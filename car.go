@@ -2,7 +2,6 @@ package Drom
 
 type Car struct {
 	ID       string `json:"id"`
-	Name     string `json:"name" binding:"required"`
+	Name     string `json:"name"`
 	CarBrand string `json:"carBrand"`
-	CarColor string `json:"carColor"`
 }
