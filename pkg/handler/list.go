@@ -23,10 +23,20 @@ func (h *Handler) createList(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	c.JSON(http.StatusOK, map[string]interface{}{"id": input})
+	c.JSON(http.StatusOK, map[string]interface{}{"create": input})
 }
-func (h *Handler) getAllLists(c *gin.Context) {
 
+type getAllListsResponse struct {
+	Data []Drom.Car `json:"data"`
+}
+
+func (h *Handler) getAllLists(c *gin.Context) {
+	lists, err := h.services.CarList.GetAll()
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	c.JSON(http.StatusOK, getAllListsResponse{Data: lists})
 }
 func (h *Handler) getListByID(c *gin.Context) {
 

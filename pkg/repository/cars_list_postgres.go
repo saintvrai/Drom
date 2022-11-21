@@ -29,3 +29,10 @@ func (r *CarsListPostgres) Create(list Drom.Car) (int, error) {
 	}
 	return id, tx.Commit()
 }
+func (r *CarsListPostgres) GetAll() ([]Drom.Car, error) {
+	var lists []Drom.Car
+	query := fmt.Sprintf("SELECT * FROM %s", carsListTable)
+	//err := r.db.Get(&lists, "SELECT * FROM %s", carsListTable)
+	err := r.db.Select(&lists, query)
+	return lists, err
+}

@@ -15,3 +15,6 @@ func NewCarsListService(repo repository.CarList) *CarsListService {
 func (s *CarsListService) Create(list Drom.Car) (int, error) {
 	return s.repo.Create(list)
 }
+func (s *CarsListService) GetAll() ([]Drom.Car, error) {
+	return s.repo.GetAll()
+}

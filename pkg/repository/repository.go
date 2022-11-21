@@ -7,6 +7,7 @@ import (
 
 type CarList interface {
 	Create(list Drom.Car) (int, error)
+	GetAll() ([]Drom.Car, error)
 }
 type CarItem interface {
 }
