@@ -59,19 +59,18 @@ func (h *Handler) updateList(c *gin.Context) {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
-	list, err := h.services.CarList.GetById(id)
-	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
-	var input Drom.Car
+	var input Drom.UpdateListInput
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	h.services.Update(id, input)
+	if err := h.services.CarList.Update(id, input); err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
 
+	c.JSON(http.StatusOK, statusResponse{"ok"})
 }
 func (h *Handler) deleteList(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
