@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/jmoiron/sqlx"
 	"github.com/saintvrai/Drom"
-	"log"
+	"github.com/sirupsen/logrus"
 	"strings"
 )
 
@@ -39,7 +39,7 @@ func (r *CarsListPostgres) GetAll() ([]Drom.Car, error) {
 }
 func (r *CarsListPostgres) GetById(listId int) (Drom.Car, error) {
 	var list Drom.Car
-	query := fmt.Sprintf("SELECT * FROM %s", carsListTable)
+	query := fmt.Sprintf("SELECT * FROM %s tl WHERE tl.id = $1", carsListTable)
 	err := r.db.Get(&list, query, listId)
 	return list, err
 }
@@ -54,25 +54,24 @@ func (r *CarsListPostgres) Update(listId int, input Drom.UpdateListInput) error 
 	argId := 1
 
 	if input.Name != nil {
-		setValues = append(setValues, fmt.Sprintf("title=$%d", argId))
+		setValues = append(setValues, fmt.Sprintf("name=$%d", argId))
 		args = append(args, *input.Name)
 		argId++
 	}
 
 	if input.CarBrand != nil {
-		setValues = append(setValues, fmt.Sprintf("description=$%d", argId))
+		setValues = append(setValues, fmt.Sprintf("carbrand=$%d", argId))
 		args = append(args, *input.CarBrand)
 		argId++
 	}
-
 	setQuery := strings.Join(setValues, ", ")
 
-	query := fmt.Sprintf("UPDATE %s tl SET %s FROM %s ul WHERE ul.list_id=$%d",
+	query := fmt.Sprintf("UPDATE %s tl SET %s FROM %s WHERE tl.id=$%d",
 		carsListTable, setQuery, carsListTable, argId)
 	args = append(args, listId)
 
-	log.Fatalf("updateQuery: %s", query)
-	log.Fatalf("args: %s", args)
+	logrus.Debugf("updateQuery: %s", query)
+	logrus.Debugf("args: %s", args)
 
 	_, err := r.db.Exec(query, args...)
 	return err

@@ -25,5 +25,9 @@ func (s *CarsListService) Delete(listId int) error {
 	return s.repo.Delete(listId)
 }
 func (s *CarsListService) Update(lisId int, input Drom.UpdateListInput) error {
+	if err := input.Validate(); err != nil {
+		return err
+	}
 	return s.repo.Update(lisId, input)
+
 }

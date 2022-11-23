@@ -45,13 +45,13 @@ func main() {
 		}
 	}()
 
-	log.Print("TodoApp Started")
+	log.Print("DromApp Started")
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
 	<-quit
 
-	log.Print("TodoApp Shutting Down")
+	log.Print("DromApp Shutting Down")
 
 	if err := srv.Shutdown(context.Background()); err != nil {
 		log.Fatalf("error occured on server shutting down: %s", err.Error())
