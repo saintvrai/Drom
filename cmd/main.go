@@ -8,8 +8,11 @@ import (
 	"github.com/saintvrai/Drom/pkg/service"
 	"github.com/spf13/viper"
 	"github.com/subosito/gotenv"
+	"golang.org/x/net/context"
 	"log"
 	"os"
+	"os/signal"
+	"syscall"
 )
 
 func main() {
@@ -36,11 +39,29 @@ func main() {
 	handlers := handler.NewHandler(services)
 
 	srv := new(Drom.Server)
-	if err := srv.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
-		log.Fatalf("error occured while running http server: %s", err.Error())
+	go func() {
+		if err := srv.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
+			log.Fatalf("error occured while running http server: %s", err.Error())
+		}
+	}()
+
+	log.Print("TodoApp Started")
+
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
+	<-quit
+
+	log.Print("TodoApp Shutting Down")
+
+	if err := srv.Shutdown(context.Background()); err != nil {
+		log.Fatalf("error occured on server shutting down: %s", err.Error())
 	}
 
+	if err := db.Close(); err != nil {
+		log.Fatalf("error occured on db connection close: %s", err.Error())
+	}
 }
+
 func initConfig() error {
 	viper.AddConfigPath("configs")
 	viper.SetConfigName("config")
