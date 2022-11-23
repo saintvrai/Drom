@@ -5,3 +5,7 @@ type Car struct {
 	Name     string `json:"name" db:"name"`
 	CarBrand string `json:"carBrand" db:"carbrand"`
 }
+type UpdateListInput struct {
+	Name     *string `json:"name"`
+	CarBrand *string `json:"carbrand"`
+}

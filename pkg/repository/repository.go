@@ -8,6 +8,9 @@ import (
 type CarList interface {
 	Create(list Drom.Car) (int, error)
 	GetAll() ([]Drom.Car, error)
+	GetById(listId int) (Drom.Car, error)
+	Delete(listId int) error
+	Update(lisId int, input Drom.UpdateListInput) error
 }
 type CarItem interface {
 }

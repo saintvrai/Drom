@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"github.com/jmoiron/sqlx"
 	"github.com/saintvrai/Drom"
+	"log"
+	"strings"
 )
 
 type CarsListPostgres struct {
@@ -32,7 +34,47 @@ func (r *CarsListPostgres) Create(list Drom.Car) (int, error) {
 func (r *CarsListPostgres) GetAll() ([]Drom.Car, error) {
 	var lists []Drom.Car
 	query := fmt.Sprintf("SELECT * FROM %s", carsListTable)
-	//err := r.db.Get(&lists, "SELECT * FROM %s", carsListTable)
 	err := r.db.Select(&lists, query)
 	return lists, err
+}
+func (r *CarsListPostgres) GetById(listId int) (Drom.Car, error) {
+	var list Drom.Car
+	query := fmt.Sprintf("SELECT * FROM %s", carsListTable)
+	err := r.db.Get(&list, query, listId)
+	return list, err
+}
+func (r *CarsListPostgres) Delete(listId int) error {
+	query := fmt.Sprintf("DELETE FROM %s tl WHERE tl.id = $1", carsListTable)
+	_, err := r.db.Exec(query, listId)
+	return err
+}
+func (r *CarsListPostgres) Update(listId int, input Drom.UpdateListInput) error {
+	setValues := make([]string, 0)
+	args := make([]interface{}, 0)
+	argId := 1
+
+	if input.Name != nil {
+		setValues = append(setValues, fmt.Sprintf("title=$%d", argId))
+		args = append(args, *input.Name)
+		argId++
+	}
+
+	if input.CarBrand != nil {
+		setValues = append(setValues, fmt.Sprintf("description=$%d", argId))
+		args = append(args, *input.CarBrand)
+		argId++
+	}
+
+	setQuery := strings.Join(setValues, ", ")
+
+	query := fmt.Sprintf("UPDATE %s tl SET %s FROM %s ul WHERE ul.list_id=$%d",
+		carsListTable, setQuery, carsListTable, argId)
+	args = append(args, listId)
+
+	log.Fatalf("updateQuery: %s", query)
+	log.Fatalf("args: %s", args)
+
+	_, err := r.db.Exec(query, args...)
+	return err
+
 }

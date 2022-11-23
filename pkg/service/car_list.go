@@ -18,3 +18,12 @@ func (s *CarsListService) Create(list Drom.Car) (int, error) {
 func (s *CarsListService) GetAll() ([]Drom.Car, error) {
 	return s.repo.GetAll()
 }
+func (s *CarsListService) GetById(listId int) (Drom.Car, error) {
+	return s.repo.GetById(listId)
+}
+func (s *CarsListService) Delete(listId int) error {
+	return s.repo.Delete(listId)
+}
+func (s *CarsListService) Update(lisId int, input Drom.UpdateListInput) error {
+	return s.repo.Update(lisId, input)
+}
