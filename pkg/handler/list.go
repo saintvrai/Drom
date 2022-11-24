@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-func (h *Handler) createList(c *gin.Context) {
+func (h *Handler) createCar(c *gin.Context) {
 
 	//id, ok := c.Get(userCtx)
 	//
@@ -31,7 +31,7 @@ type getAllListsResponse struct {
 	Data []Drom.Car `json:"data"`
 }
 
-func (h *Handler) getAllLists(c *gin.Context) {
+func (h *Handler) getCarsList(c *gin.Context) {
 	lists, err := h.services.CarList.GetAll()
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -39,7 +39,7 @@ func (h *Handler) getAllLists(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, getAllListsResponse{Data: lists})
 }
-func (h *Handler) getListByID(c *gin.Context) {
+func (h *Handler) getCarById(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
@@ -53,7 +53,7 @@ func (h *Handler) getListByID(c *gin.Context) {
 
 	c.JSON(http.StatusOK, list)
 }
-func (h *Handler) updateList(c *gin.Context) {
+func (h *Handler) updateCarById(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
@@ -72,7 +72,7 @@ func (h *Handler) updateList(c *gin.Context) {
 
 	c.JSON(http.StatusOK, statusResponse{"ok"})
 }
-func (h *Handler) deleteList(c *gin.Context) {
+func (h *Handler) deleteById(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
