@@ -1,0 +1,9 @@
+basePath: /
+host: localhost:8000
+info:
+  contact: {}
+  description: API Server for TodoList Application
+  title: Swagger App Api
+  version: "1.0"
+paths: {}
+swagger: "2.0"
