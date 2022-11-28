@@ -9,12 +9,6 @@ import (
 
 func (h *Handler) createCar(c *gin.Context) {
 
-	//id, ok := c.Get(userCtx)
-	//
-	//if !ok {
-	//	newErrorResponse(c, http.StatusInternalServerError, "user not found")
-	//	return
-	//}
 	var input Drom.Car
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
