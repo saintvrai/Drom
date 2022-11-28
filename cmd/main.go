@@ -15,6 +15,12 @@ import (
 	"syscall"
 )
 
+// @title Swagger App Api
+// @version 1.0
+// @description API Server for TodoList Application
+
+// @host localhost:8000
+// @BasePath /
 func main() {
 
 	if err := initConfig(); err != nil {
