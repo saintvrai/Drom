@@ -15,9 +15,9 @@ import (
 	"syscall"
 )
 
-// @title Swagger App Api
+// @title Drom App Api
 // @version 1.0
-// @description API Server for TodoList Application
+// @description API Server for DromApp Application
 
 // @host localhost:8000
 // @BasePath /
