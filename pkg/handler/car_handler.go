@@ -37,6 +37,17 @@ type getAllListsResponse struct {
 	Data []Drom.Car `json:"data"`
 }
 
+// @Summary Get All Cars
+// @Tags cars
+// @Description get all cars from database
+// @ID get-all-cars
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} getAllListsResponse
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /api/lists [get]
 func (h *Handler) getCarsList(c *gin.Context) {
 	lists, err := h.services.CarList.GetAll()
 	if err != nil {
@@ -45,6 +56,18 @@ func (h *Handler) getCarsList(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, getAllListsResponse{Data: lists})
 }
+
+// @Summary Get Car By Id
+// @Tags cars
+// @Description get car by id from database
+// @ID get-car-by-id
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} Drom.Car
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /api/lists/:id [get]
 func (h *Handler) getCarById(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
