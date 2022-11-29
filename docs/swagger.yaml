@@ -1,4 +1,5 @@
 basePath: /
+
 definitions:
   Drom.Car:
     properties:
@@ -60,4 +61,5 @@ paths:
       summary: Create Car
       tags:
       - cars
+
 swagger: "2.0"

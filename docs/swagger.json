@@ -1,8 +1,10 @@
 {
     "swagger": "2.0",
     "info": {
+
         "description": "API Server for DromApp Application",
         "title": "Drom App Api",
+
         "contact": {},
         "version": "1.0"
     },
@@ -93,4 +95,5 @@
             }
         }
     }
+
 }

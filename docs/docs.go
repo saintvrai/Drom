@@ -15,6 +15,7 @@ const docTemplate = `{
     },
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
+
     "paths": {
         "/api/lists": {
             "post": {
@@ -100,6 +101,7 @@ const docTemplate = `{
             }
         }
     }
+
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
@@ -110,6 +112,7 @@ var SwaggerInfo = &swag.Spec{
 	Schemes:          []string{},
 	Title:            "Drom App Api",
 	Description:      "API Server for DromApp Application",
+
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 }
