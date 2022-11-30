@@ -1,9 +1,65 @@
 basePath: /
+
+definitions:
+  Drom.Car:
+    properties:
+      carbrand:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  handler.errorResponse:
+    properties:
+      message:
+        type: string
+    type: object
 host: localhost:8000
 info:
   contact: {}
-  description: API Server for TodoList Application
-  title: Swagger App Api
+  description: API Server for DromApp Application
+  title: Drom App Api
   version: "1.0"
-paths: {}
+paths:
+  /api/lists:
+    post:
+      consumes:
+      - application/json
+      description: create one car to Drom database
+      operationId: create-car
+      parameters:
+      - description: car info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/Drom.Car'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Create Car
+      tags:
+      - cars
+
 swagger: "2.0"
