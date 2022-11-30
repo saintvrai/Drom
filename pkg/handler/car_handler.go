@@ -7,6 +7,7 @@ import (
 	"strconv"
 )
 
+
 // @Summary Create Car
 // @Tags cars
 // @Description create one car to Drom database
@@ -19,6 +20,7 @@ import (
 // @Failure 500 {object} errorResponse
 // @Failure default {object} errorResponse
 // @Router /api/lists [post]
+
 func (h *Handler) createCar(c *gin.Context) {
 
 	var input Drom.Car

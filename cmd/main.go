@@ -18,7 +18,6 @@ import (
 // @title Drom App Api
 // @version 1.0
 // @description API Server for DromApp Application
-
 // @host localhost:8000
 // @BasePath /
 func main() {
