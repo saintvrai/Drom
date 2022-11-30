@@ -7,7 +7,6 @@ import (
 	"strconv"
 )
 
-
 // @Summary Create Car
 // @Tags cars
 // @Description create one car to Drom database
@@ -20,7 +19,6 @@ import (
 // @Failure 500 {object} errorResponse
 // @Failure default {object} errorResponse
 // @Router /api/lists [post]
-
 func (h *Handler) createCar(c *gin.Context) {
 
 	var input Drom.Car
@@ -65,11 +63,12 @@ func (h *Handler) getCarsList(c *gin.Context) {
 // @ID get-car-by-id
 // @Accept  json
 // @Produce  json
+// @Param id path int true "Car ID"
 // @Success 200 {object} Drom.Car
 // @Failure 400,404 {object} errorResponse
 // @Failure 500 {object} errorResponse
 // @Failure default {object} errorResponse
-// @Router /api/lists/:id [get]
+// @Router /api/lists/{id} [get]
 func (h *Handler) getCarById(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -103,6 +102,19 @@ func (h *Handler) updateCarById(c *gin.Context) {
 
 	c.JSON(http.StatusOK, statusResponse{"ok"})
 }
+
+// @Summary Delete Car By Id
+// @Tags cars
+// @Description Delete car by id from database
+// @ID delete-car-by-id
+// @Accept  json
+// @Produce  json
+// @Param id path int true "Car ID"
+// @Success 200 {object} Drom.Car
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /api/lists/{id} [delete]
 func (h *Handler) deleteById(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {

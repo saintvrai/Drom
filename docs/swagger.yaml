@@ -98,12 +98,55 @@ paths:
       summary: Create Car
       tags:
       - cars
-  /api/lists/:id:
+  /api/lists/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete car by id from database
+      operationId: delete-car-by-id
+      parameters:
+      - description: Car ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Drom.Car'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Delete Car By Id
+      tags:
+      - cars
     get:
       consumes:
       - application/json
       description: get car by id from database
       operationId: get-car-by-id
+      parameters:
+      - description: Car ID
+        in: path
+        name: id
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
