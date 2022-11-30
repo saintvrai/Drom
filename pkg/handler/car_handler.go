@@ -83,6 +83,20 @@ func (h *Handler) getCarById(c *gin.Context) {
 
 	c.JSON(http.StatusOK, list)
 }
+
+// @Summary Update Car By Id
+// @Tags cars
+// @Description update car by id from database
+// @ID update-car-by-id
+// @Accept  json
+// @Produce  json
+// @Param id path int true "Car ID"
+// @Param name path string true "NameCar"
+// @Success 200 {object} Drom.Car
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /api/lists/{id} [put]
 func (h *Handler) updateCarById(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
