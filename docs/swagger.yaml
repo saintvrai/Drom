@@ -184,11 +184,12 @@ paths:
         name: id
         required: true
         type: integer
-      - description: NameCar
-        in: path
-        name: name
+      - description: DromCar
+        in: body
+        name: car
         required: true
-        type: string
+        schema:
+          $ref: '#/definitions/Drom.Car'
       produces:
       - application/json
       responses:

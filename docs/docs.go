@@ -199,11 +199,13 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "string",
-                        "description": "NameCar",
-                        "name": "name",
-                        "in": "path",
-                        "required": true
+                        "description": "DromCar",
+                        "name": "car",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Drom.Car"
+                        }
                     }
                 ],
                 "responses": {

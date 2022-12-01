@@ -91,7 +91,7 @@ func (h *Handler) getCarById(c *gin.Context) {
 // @Accept  json
 // @Produce  json
 // @Param id path int true "Car ID"
-// @Param name path string true "NameCar"
+// @Param car body Drom.Car true "DromCar"
 // @Success 200 {object} Drom.Car
 // @Failure 400,404 {object} errorResponse
 // @Failure 500 {object} errorResponse
