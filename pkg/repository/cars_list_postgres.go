@@ -38,10 +38,10 @@ func (r *CarsListPostgres) GetAll() ([]Drom.Car, error) {
 	return lists, err
 }
 func (r *CarsListPostgres) GetById(listId int) (Drom.Car, error) {
-	var list Drom.Car
-	query := fmt.Sprintf("SELECT * FROM %s tl WHERE tl.id = $1", carsListTable)
-	err := r.db.Get(&list, query, listId)
-	return list, err
+	var car Drom.Car
+	query := fmt.Sprintf("SELECT * FROM %s WHERE id = $1", carsListTable)
+	err := r.db.Get(&car, query, listId)
+	return car, err
 }
 func (r *CarsListPostgres) Delete(listId int) error {
 	query := fmt.Sprintf("DELETE FROM %s tl WHERE tl.id = $1", carsListTable)
