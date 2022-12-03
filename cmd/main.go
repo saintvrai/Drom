@@ -4,12 +4,12 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/saintvrai/Drom"
 	"github.com/saintvrai/Drom/pkg/handler"
+	"github.com/saintvrai/Drom/pkg/logging"
 	"github.com/saintvrai/Drom/pkg/repository"
 	"github.com/saintvrai/Drom/pkg/service"
 	"github.com/spf13/viper"
 	"github.com/subosito/gotenv"
 	"golang.org/x/net/context"
-	"log"
 	"os"
 	"os/signal"
 	"syscall"
@@ -21,7 +21,7 @@ import (
 // @host localhost:8000
 // @BasePath /
 func main() {
-
+	log := logging.GetLogger()
 	if err := initConfig(); err != nil {
 		log.Fatalf("error initialializing configs:  %s", err.Error())
 	}
