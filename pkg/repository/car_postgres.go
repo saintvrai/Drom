@@ -8,14 +8,14 @@ import (
 	"strings"
 )
 
-type CarsListPostgres struct {
+type CarsPostgres struct {
 	db *sqlx.DB
 }
 
-func NewCarsListPostgres(db *sqlx.DB) *CarsListPostgres {
-	return &CarsListPostgres{db: db}
+func NewCarsPostgres(db *sqlx.DB) *CarsPostgres {
+	return &CarsPostgres{db: db}
 }
-func (r *CarsListPostgres) Create(list Drom.Car) (int, error) {
+func (r *CarsPostgres) Create(car Drom.Car) (int, error) {
 	tx, err := r.db.Begin()
 	if err != nil {
 		return 0, err
@@ -23,32 +23,35 @@ func (r *CarsListPostgres) Create(list Drom.Car) (int, error) {
 
 	var id int
 
-	createListQuery := fmt.Sprintf("INSERT INTO %s (NAME,CARBRAND) VALUES ($1,$2) RETURNING id", carsListTable)
-	row := tx.QueryRow(createListQuery, list.Name, list.CarBrand)
+	createListQuery := fmt.Sprintf("INSERT INTO %s (NAME,CARBRAND) VALUES ($1,$2) RETURNING id", carsTable)
+	row := tx.QueryRow(createListQuery, car.Name, car.CarBrand)
 	if err := row.Scan(&id); err != nil {
-		tx.Rollback()
+		err := tx.Rollback()
+		if err != nil {
+			return 0, err
+		}
 		return 0, err
 	}
 	return id, tx.Commit()
 }
-func (r *CarsListPostgres) GetAll() ([]Drom.Car, error) {
+func (r *CarsPostgres) GetAll() ([]Drom.Car, error) {
 	var lists []Drom.Car
-	query := fmt.Sprintf("SELECT * FROM %s", carsListTable)
+	query := fmt.Sprintf("SELECT * FROM %s", carsTable)
 	err := r.db.Select(&lists, query)
 	return lists, err
 }
-func (r *CarsListPostgres) GetById(listId int) (Drom.Car, error) {
+func (r *CarsPostgres) GetById(listId int) (Drom.Car, error) {
 	var car Drom.Car
-	query := fmt.Sprintf("SELECT * FROM %s WHERE id = $1", carsListTable)
+	query := fmt.Sprintf("SELECT * FROM %s WHERE id = $1", carsTable)
 	err := r.db.Get(&car, query, listId)
 	return car, err
 }
-func (r *CarsListPostgres) Delete(listId int) error {
-	query := fmt.Sprintf("DELETE FROM %s tl WHERE tl.id = $1", carsListTable)
+func (r *CarsPostgres) Delete(listId int) error {
+	query := fmt.Sprintf("DELETE FROM %s tl WHERE tl.id = $1", carsTable)
 	_, err := r.db.Exec(query, listId)
 	return err
 }
-func (r *CarsListPostgres) Update(listId int, input Drom.UpdateListInput) error {
+func (r *CarsPostgres) Update(listId int, input Drom.UpdateListInput) error {
 	setValues := make([]string, 0)
 	args := make([]interface{}, 0)
 	argId := 1
@@ -67,7 +70,7 @@ func (r *CarsListPostgres) Update(listId int, input Drom.UpdateListInput) error 
 	setQuery := strings.Join(setValues, ", ")
 
 	query := fmt.Sprintf("UPDATE %s tl SET %s FROM %s WHERE tl.id=$%d",
-		carsListTable, setQuery, carsListTable, argId)
+		carsTable, setQuery, carsTable, argId)
 	args = append(args, listId)
 
 	logrus.Debugf("updateQuery: %s", query)

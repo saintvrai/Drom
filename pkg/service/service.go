@@ -5,22 +5,20 @@ import (
 	"github.com/saintvrai/Drom/pkg/repository"
 )
 
-type CarList interface {
+type Car interface {
 	Create(car Drom.Car) (int, error)
 	GetAll() ([]Drom.Car, error)
-	GetById(listId int) (Drom.Car, error)
-	Delete(listId int) error
-	Update(lisId int, input Drom.UpdateListInput) error
+	GetById(carId int) (Drom.Car, error)
+	Delete(carId int) error
+	Update(carId int, input Drom.UpdateListInput) error
 }
-type CarItem interface {
-}
+
 type Service struct {
-	CarItem
-	CarList
+	Car
 }
 
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
-		CarList: NewCarsListService(repos.CarList),
+		Car: NewCarsService(repos.Car),
 	}
 }

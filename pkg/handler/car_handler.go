@@ -25,7 +25,7 @@ func (h *Handler) createCar(c *gin.Context) {
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 	}
-	_, err := h.services.CarList.Create(input)
+	_, err := h.services.Car.Create(input)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -49,7 +49,7 @@ type getAllListsResponse struct {
 // @Failure default {object} errorResponse
 // @Router /api/lists [get]
 func (h *Handler) getCarsList(c *gin.Context) {
-	lists, err := h.services.CarList.GetAll()
+	lists, err := h.services.Car.GetAll()
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -75,7 +75,7 @@ func (h *Handler) getCarById(c *gin.Context) {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
-	list, err := h.services.CarList.GetById(id)
+	list, err := h.services.Car.GetById(id)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -109,7 +109,7 @@ func (h *Handler) updateCarById(c *gin.Context) {
 		return
 	}
 
-	if err := h.services.CarList.Update(id, input); err != nil {
+	if err := h.services.Car.Update(id, input); err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -135,7 +135,7 @@ func (h *Handler) deleteById(c *gin.Context) {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
-	err = h.services.CarList.Delete(id)
+	err = h.services.Car.Delete(id)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return

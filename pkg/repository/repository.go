@@ -5,22 +5,19 @@ import (
 	"github.com/saintvrai/Drom"
 )
 
-type CarList interface {
-	Create(list Drom.Car) (int, error)
+type Car interface {
+	Create(car Drom.Car) (int, error)
 	GetAll() ([]Drom.Car, error)
-	GetById(listId int) (Drom.Car, error)
-	Delete(listId int) error
-	Update(lisId int, input Drom.UpdateListInput) error
-}
-type CarItem interface {
+	GetById(carId int) (Drom.Car, error)
+	Delete(carId int) error
+	Update(carId int, input Drom.UpdateListInput) error
 }
 type Repository struct {
-	CarItem
-	CarList
+	Car
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
-		CarList: NewCarsListPostgres(db),
+		Car: NewCarsPostgres(db),
 	}
 }
