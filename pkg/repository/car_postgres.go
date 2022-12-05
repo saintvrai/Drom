@@ -3,7 +3,7 @@ package repository
 import (
 	"fmt"
 	"github.com/jmoiron/sqlx"
-	"github.com/saintvrai/Drom"
+	"github.com/saintvrai/Drom/internal/car"
 	"github.com/sirupsen/logrus"
 	"strings"
 )
@@ -15,7 +15,7 @@ type CarsPostgres struct {
 func NewCarsPostgres(db *sqlx.DB) *CarsPostgres {
 	return &CarsPostgres{db: db}
 }
-func (r *CarsPostgres) Create(car Drom.Car) (int, error) {
+func (r *CarsPostgres) Create(car car.Car) (int, error) {
 	tx, err := r.db.Begin()
 	if err != nil {
 		return 0, err
@@ -34,24 +34,24 @@ func (r *CarsPostgres) Create(car Drom.Car) (int, error) {
 	}
 	return id, tx.Commit()
 }
-func (r *CarsPostgres) GetAll() ([]Drom.Car, error) {
-	var lists []Drom.Car
+func (r *CarsPostgres) GetAll() ([]car.Car, error) {
+	var cars []car.Car
 	query := fmt.Sprintf("SELECT * FROM %s", carsTable)
-	err := r.db.Select(&lists, query)
-	return lists, err
+	err := r.db.Select(&cars, query)
+	return cars, err
 }
-func (r *CarsPostgres) GetById(listId int) (Drom.Car, error) {
-	var car Drom.Car
+func (r *CarsPostgres) GetById(carId int) (car.Car, error) {
+	var carObj car.Car
 	query := fmt.Sprintf("SELECT * FROM %s WHERE id = $1", carsTable)
-	err := r.db.Get(&car, query, listId)
-	return car, err
+	err := r.db.Get(&carObj, query, carId)
+	return carObj, err
 }
-func (r *CarsPostgres) Delete(listId int) error {
+func (r *CarsPostgres) Delete(carId int) error {
 	query := fmt.Sprintf("DELETE FROM %s tl WHERE tl.id = $1", carsTable)
-	_, err := r.db.Exec(query, listId)
+	_, err := r.db.Exec(query, carId)
 	return err
 }
-func (r *CarsPostgres) Update(listId int, input Drom.UpdateListInput) error {
+func (r *CarsPostgres) Update(carId int, input car.UpdateListInput) error {
 	setValues := make([]string, 0)
 	args := make([]interface{}, 0)
 	argId := 1
@@ -71,7 +71,7 @@ func (r *CarsPostgres) Update(listId int, input Drom.UpdateListInput) error {
 
 	query := fmt.Sprintf("UPDATE %s tl SET %s FROM %s WHERE tl.id=$%d",
 		carsTable, setQuery, carsTable, argId)
-	args = append(args, listId)
+	args = append(args, carId)
 
 	logrus.Debugf("updateQuery: %s", query)
 	logrus.Debugf("args: %s", args)

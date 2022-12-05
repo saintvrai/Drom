@@ -2,7 +2,7 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/saintvrai/Drom"
+	"github.com/saintvrai/Drom/internal/car"
 	"net/http"
 	"strconv"
 )
@@ -21,7 +21,7 @@ import (
 // @Router /api/lists [post]
 func (h *Handler) createCar(c *gin.Context) {
 
-	var input Drom.Car
+	var input car.Car
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 	}
@@ -34,7 +34,7 @@ func (h *Handler) createCar(c *gin.Context) {
 }
 
 type getAllListsResponse struct {
-	Data []Drom.Car `json:"data"`
+	Data []car.Car `json:"data"`
 }
 
 // @Summary Get All Cars
@@ -103,7 +103,7 @@ func (h *Handler) updateCarById(c *gin.Context) {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
-	var input Drom.UpdateListInput
+	var input car.UpdateListInput
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return

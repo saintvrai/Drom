@@ -1,11 +1,15 @@
-package Drom
+package car
 
-import "errors"
+import (
+	"errors"
+	"github.com/saintvrai/Drom/internal/client"
+)
 
 type Car struct {
-	ID       string `json:"id" db:"id"`
-	Name     string `json:"name" db:"name"`
-	CarBrand string `json:"carbrand" db:"carbrand"`
+	ID       string        `json:"id" db:"id"`
+	Name     string        `json:"name" db:"name"`
+	CarBrand string        `json:"carbrand" db:"carbrand"`
+	Client   client.Client `json:"client"`
 }
 type UpdateListInput struct {
 	Name     *string `json:"name"`

@@ -43,7 +43,7 @@ func main() {
 	services := service.NewService(repos)
 	handlers := handler.NewHandler(services)
 
-	srv := new(Drom.Server)
+	srv := new(car.Server)
 	go func() {
 		if err := srv.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
 			log.Fatalf("error occured while running http server: %s", err.Error())
