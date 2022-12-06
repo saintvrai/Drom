@@ -7,6 +7,8 @@ import (
 
 const (
 	carsTable = "cars_lists"
+	//clientTable = "client"
+	usersTable = "users"
 )
 
 type Config struct {

@@ -2,9 +2,13 @@ package service
 
 import (
 	"github.com/saintvrai/Drom/internal/car"
+	"github.com/saintvrai/Drom/internal/user"
 	"github.com/saintvrai/Drom/pkg/repository"
 )
 
+type Authorization interface {
+	CreateUser(user user.User) (string, error)
+}
 type Car interface {
 	Create(car car.Car) (int, error)
 	GetAll() ([]car.Car, error)
@@ -15,10 +19,12 @@ type Car interface {
 
 type Service struct {
 	Car
+	Authorization
 }
 
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
-		Car: NewCarsService(repos.Car),
+		NewCarsService(repos.Car),
+		NewAuthService(repos.Authorization),
 	}
 }
