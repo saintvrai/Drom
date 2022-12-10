@@ -1,6 +1,10 @@
 package main
 
 import (
+	"github.com/golang-migrate/migrate"
+	"github.com/golang-migrate/migrate/database/postgres"
+	_ "github.com/golang-migrate/migrate/source/file"
+	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"github.com/saintvrai/Drom"
 	"github.com/saintvrai/Drom/pkg/handler"
@@ -21,6 +25,7 @@ import (
 // @host localhost:8000
 // @BasePath /
 func main() {
+
 	log := logging.GetLogger()
 	if err := initConfig(); err != nil {
 		log.Fatalf("error initialializing configs:  %s", err.Error())
@@ -28,6 +33,7 @@ func main() {
 	if err := gotenv.Load(); err != nil {
 		log.Fatalf("error loading env variables: %s", err.Error())
 	}
+
 	db, err := repository.NewPostgresDB(repository.Config{
 		Host:     viper.GetString("db.host"),
 		Port:     viper.GetString("db.port"),
@@ -39,7 +45,9 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to initialize db: %s", err.Error())
 	}
+
 	repos := repository.NewRepository(db)
+	migrateDB(db, viper.GetString("db.dbname"))
 	services := service.NewService(repos)
 	handlers := handler.NewHandler(services)
 
@@ -71,4 +79,22 @@ func initConfig() error {
 	viper.AddConfigPath("configs")
 	viper.SetConfigName("config")
 	return viper.ReadInConfig()
+}
+func migrateDB(db *sqlx.DB, dbname string) {
+	log := logging.GetLogger()
+	driver, err := postgres.WithInstance(db.DB, &postgres.Config{})
+	if err != nil {
+		log.Fatalf("couldn't get database instance for running migrations; %s", err.Error())
+	}
+
+	m, err := migrate.NewWithDatabaseInstance("file://db/migrations", dbname, driver)
+	if err != nil {
+		log.Fatalf("couldn't create migrate instance; %s", err.Error())
+	}
+
+	if err := m.Up(); err != nil && err != migrate.ErrNoChange {
+		log.Printf("couldn't run database migrations; %s", err.Error())
+	} else {
+		log.Println("database migration was run successfully")
+	}
 }
