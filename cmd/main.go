@@ -4,6 +4,7 @@ import (
 	"github.com/golang-migrate/migrate"
 	"github.com/golang-migrate/migrate/database/postgres"
 	_ "github.com/golang-migrate/migrate/source/file"
+	_ "github.com/jackc/pgx"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"github.com/saintvrai/Drom"
@@ -92,7 +93,7 @@ func migrateDB(db *sqlx.DB, dbname string) {
 		log.Fatalf("couldn't create migrate instance; %s", err.Error())
 	}
 
-	if err := m.Up(); err != nil && err != migrate.ErrNoChange {
+	if err := m.Up(); err != nil {
 		log.Printf("couldn't run database migrations; %s", err.Error())
 	} else {
 		log.Println("database migration was run successfully")
