@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	carsTable = "cars_lists"
+	carsTable = "cars"
 	//clientTable = "client"
 	usersTable = "users"
 )

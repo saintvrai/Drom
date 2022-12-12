@@ -8,6 +8,7 @@ import (
 
 type Authorization interface {
 	CreateUser(user user.User) (string, error)
+	GenerateToken(username, password string) (string, error)
 }
 type Car interface {
 	Create(car car.Car) (int, error)
