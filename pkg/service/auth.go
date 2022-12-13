@@ -2,6 +2,7 @@ package service
 
 import (
 	"crypto/sha1"
+	"errors"
 	"fmt"
 	jwt "github.com/golang-jwt/jwt/v4"
 	"github.com/saintvrai/Drom/internal/user"
@@ -43,6 +44,19 @@ func (s *AuthService) GenerateToken(username, password string) (string, error) {
 	})
 
 	return token.SignedString([]byte(signingKey))
+}
+func (s *AuthService) ParseToken(accessToken string) (string, error) {
+	token, _ := jwt.ParseWithClaims(accessToken, &tokenClaims{}, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, errors.New("invalid signing method")
+		}
+		return []byte(signingKey), nil
+	})
+	claims, ok := token.Claims.(*tokenClaims)
+	if !ok {
+		return "", errors.New("token claims are not of type *tokenClaims")
+	}
+	return claims.UserID, nil
 }
 func generatePasswordHash(password string) string {
 	hash := sha1.New()

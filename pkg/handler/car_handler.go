@@ -20,7 +20,10 @@ import (
 // @Failure default {object} errorResponse
 // @Router /api/lists [post]
 func (h *Handler) createCar(c *gin.Context) {
-
+	id, _ := c.Get(userCtx)
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"id": id,
+	})
 	var input car.Car
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
@@ -57,7 +60,7 @@ func (h *Handler) getCarsList(c *gin.Context) {
 	c.JSON(http.StatusOK, getAllListsResponse{Data: lists})
 }
 
-// @Summary Get Car By Id
+// @Summary Get Car By ID
 // @Tags cars
 // @Description get car by id from database
 // @ID get-car-by-id
@@ -84,7 +87,7 @@ func (h *Handler) getCarById(c *gin.Context) {
 	c.JSON(http.StatusOK, list)
 }
 
-// @Summary Update Car By Id
+// @Summary Update Car By ID
 // @Tags cars
 // @Description update car by id from database
 // @ID update-car-by-id
