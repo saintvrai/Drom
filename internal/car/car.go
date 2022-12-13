@@ -9,6 +9,7 @@ type Car struct {
 	ID       string        `json:"id" db:"id"`
 	Name     string        `json:"name" db:"name"`
 	CarBrand string        `json:"carbrand" db:"carbrand"`
+	Free     bool          `json:"free" db:"free"`
 	Client   client.Client `json:"client"`
 }
 type UpdateListInput struct {

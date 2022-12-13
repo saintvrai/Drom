@@ -1,14 +1,14 @@
-CREATE TABLE public.users(
+CREATE TABLE users(
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(100) not null,
     username VARCHAR(100) not null unique,
     password_hash VARCHAR(100) not null
 );
-CREATE TABLE public.clients(
+CREATE TABLE clients(
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(100) NOT NULL
 );
-CREATE TABLE public.сars(
+CREATE TABLE сars(
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(100) NOT NULL,
     carbrand VARCHAR(100),

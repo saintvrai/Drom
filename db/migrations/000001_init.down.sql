@@ -1,4 +1,4 @@
-DROP TABLE public.users;
-DROP TABLE public.сars;
-DROP TABLE public.clients;
-DROP TABLE public.schema_migrations;
+DROP TABLE users;
+DROP TABLE сars;
+DROP TABLE clients;
+DROP TABLE schema_migrations;

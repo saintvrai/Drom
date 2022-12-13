@@ -20,10 +20,11 @@ import (
 // @Failure default {object} errorResponse
 // @Router /api/lists [post]
 func (h *Handler) createCar(c *gin.Context) {
-	id, _ := c.Get(userCtx)
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"id": id,
-	})
+	_, ok := c.Get(userCtx)
+	if !ok {
+		newErrorResponse(c, http.StatusInternalServerError, "user id not found")
+		return
+	}
 	var input car.Car
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
@@ -33,7 +34,7 @@ func (h *Handler) createCar(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	c.JSON(http.StatusOK, map[string]interface{}{"create": input})
+	c.JSON(http.StatusOK, statusResponse{"ok"})
 }
 
 type getAllListsResponse struct {
