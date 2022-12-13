@@ -8,11 +8,11 @@ CREATE TABLE clients(
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(100) NOT NULL
 );
-CREATE TABLE сars(
+CREATE TABLE cars(
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(100) NOT NULL,
     carbrand VARCHAR(100),
     free boolean not null default false,
     client_id UUID ,
-    CONSTRAINT clients_fk FOREIGN KEY (client_id) REFERENCES public.clients(id) on delete cascade
+    CONSTRAINT clients_fk FOREIGN KEY (client_id) REFERENCES clients(id) on delete cascade
 );

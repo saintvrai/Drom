@@ -20,11 +20,9 @@ func (r *CarsPostgres) Create(car car.Car) (int, error) {
 	if err != nil {
 		return 0, err
 	}
-
 	var id int
-
-	createListQuery := fmt.Sprintf("INSERT INTO %s (NAME,CARBRAND) VALUES ($1,$2) RETURNING id", carsTable)
-	row := tx.QueryRow(createListQuery, car.Name, car.CarBrand)
+	createListQuery := fmt.Sprintf("INSERT INTO %s (NAME,CARBRAND,FREE) VALUES ($1,$2,$3) RETURNING id", carsTable)
+	row := tx.QueryRow(createListQuery, car.Name, car.CarBrand, car.Free)
 	if err := row.Scan(&id); err != nil {
 		err := tx.Rollback()
 		if err != nil {

@@ -7,7 +7,7 @@ import (
 
 const (
 	carsTable   = "cars"
-	clientTable = "client"
+	clientTable = "clients"
 	usersTable  = "users"
 )
 

@@ -10,7 +10,7 @@ type Car struct {
 	Name     string        `json:"name" db:"name"`
 	CarBrand string        `json:"carbrand" db:"carbrand"`
 	Free     bool          `json:"free" db:"free"`
-	Client   client.Client `json:"client"`
+	Client   client.Client `json:"client" db:"client"`
 }
 type UpdateListInput struct {
 	Name     *string `json:"name"`
@@ -21,6 +21,5 @@ func (i UpdateListInput) Validate() error {
 	if i.Name == nil && i.CarBrand == nil {
 		return errors.New("update structure has no values")
 	}
-
 	return nil
 }

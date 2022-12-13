@@ -17,6 +17,7 @@ const signingKey = "hwebfds7304sdnojb"
 type AuthService struct {
 	repo repository.Authorization
 }
+
 type tokenClaims struct {
 	jwt.StandardClaims
 	UserID string `json:"user_ID"`
