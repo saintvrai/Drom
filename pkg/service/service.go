@@ -13,11 +13,12 @@ type Authorization interface {
 	ParseToken(token string) (string, error)
 }
 type Car interface {
-	Create(car car.Car) (int, error)
+	Create(car car.Car) (string, error)
 	GetAll() ([]car.Car, error)
 	GetById(carId int) (car.Car, error)
 	Delete(carId int) error
 	Update(carId int, input car.UpdateListInput) error
+	GetAllCarsAndClients() ([]car.Car, error)
 }
 type Client interface {
 	Create(client client.Client) (string, error)

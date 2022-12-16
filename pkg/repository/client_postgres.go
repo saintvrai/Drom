@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/jmoiron/sqlx"
 	"github.com/saintvrai/Drom/internal/client"
-	"github.com/sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	"strings"
 )
 
@@ -71,10 +71,9 @@ func (r *ClientsPostgres) Update(clientID string, input client.UpdateListInput) 
 		clientTable, setQuery, clientTable, argId)
 	args = append(args, clientID)
 
-	logrus.Debugf("updateQuery: %s", query)
-	logrus.Debugf("args: %s", args)
+	log.Debugf("updateQuery: %s", query)
+	log.Debugf("args: %s", args)
 
 	_, err := r.db.Exec(query, args...)
 	return err
-
 }

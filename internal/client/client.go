@@ -5,7 +5,7 @@ import "errors"
 type Client struct {
 	ID    string `json:"id" db:"id"`
 	Name  string `json:"name" db:"name"`
-	Money string `json:"money" db:"money"`
+	Money int    `json:"money" db:"money"`
 }
 type UpdateListInput struct {
 	Name  *string `json:"name" db:"name"`

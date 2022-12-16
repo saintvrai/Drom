@@ -6,13 +6,14 @@ CREATE TABLE users(
 );
 CREATE TABLE clients(
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    name VARCHAR(100) NOT NULL
+    name VARCHAR(100) NOT NULL,
+    money INT DEFAULT 0
 );
 CREATE TABLE cars(
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(100) NOT NULL,
     carbrand VARCHAR(100),
-    free boolean not null default false,
-    client_id UUID ,
-    CONSTRAINT clients_fk FOREIGN KEY (client_id) REFERENCES clients(id) on delete cascade
+    free boolean not null default true,
+    clientid UUID,
+    CONSTRAINT clients_fk FOREIGN KEY (clientid) REFERENCES clients(id)
 );

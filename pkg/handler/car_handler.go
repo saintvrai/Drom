@@ -3,6 +3,7 @@ package handler
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/saintvrai/Drom/internal/car"
+	"github.com/saintvrai/Drom/internal/client"
 	"net/http"
 	"strconv"
 )
@@ -37,28 +38,28 @@ func (h *Handler) createCar(c *gin.Context) {
 	c.JSON(http.StatusOK, statusResponse{"ok"})
 }
 
-type getAllListsResponse struct {
-	Data []car.Car `json:"data"`
-}
-
 // @Summary Get All Cars
 // @Tags cars
 // @Description get all cars from database
 // @ID get-all-cars
 // @Accept  json
 // @Produce  json
-// @Success 200 {object} getAllListsResponse
+// @Success 200 {object} getAllCarsResponse
 // @Failure 400,404 {object} errorResponse
 // @Failure 500 {object} errorResponse
 // @Failure default {object} errorResponse
 // @Router /api/lists [get]
+type getAllCarsResponse struct {
+	Data []car.Car `json:"data"`
+}
+
 func (h *Handler) getCarsList(c *gin.Context) {
 	lists, err := h.services.Car.GetAll()
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	c.JSON(http.StatusOK, getAllListsResponse{Data: lists})
+	c.JSON(http.StatusOK, getAllCarsResponse{Data: lists})
 }
 
 // @Summary Get Car By ID
@@ -149,4 +150,18 @@ func (h *Handler) deleteById(c *gin.Context) {
 		Status: "ok",
 	})
 
+}
+
+type getAllCarsAndClientsResponse struct {
+	CarData    []car.Car       `json:"carData"`
+	ClientData []client.Client `json:"clientData"`
+}
+
+func (h *Handler) getAllCarsAndClients(c *gin.Context) {
+	list, err := h.services.Car.GetAllCarsAndClients()
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	c.JSON(http.StatusOK, list[0])
 }

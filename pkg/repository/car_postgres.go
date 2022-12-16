@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"github.com/jmoiron/sqlx"
 	"github.com/saintvrai/Drom/internal/car"
-	"github.com/sirupsen/logrus"
+	//"github.com/saintvrai/Drom/pkg/logging"
+	log "github.com/sirupsen/logrus"
 	"strings"
 )
 
@@ -15,20 +16,21 @@ type CarsPostgres struct {
 func NewCarsPostgres(db *sqlx.DB) *CarsPostgres {
 	return &CarsPostgres{db: db}
 }
-func (r *CarsPostgres) Create(car car.Car) (int, error) {
+func (r *CarsPostgres) Create(car car.Car) (string, error) {
 	tx, err := r.db.Begin()
 	if err != nil {
-		return 0, err
+		return "", err
 	}
-	var id int
-	createListQuery := fmt.Sprintf("INSERT INTO %s (NAME,CARBRAND,FREE) VALUES ($1,$2,$3) RETURNING id", carsTable)
-	row := tx.QueryRow(createListQuery, car.Name, car.CarBrand, car.Free)
+	var id string
+	createListQuery := fmt.Sprintf("INSERT INTO %s (name,carbrand,free,clientid) VALUES ($1,$2,$3,$4) RETURNING id", carsTable)
+	row := tx.QueryRow(createListQuery, car.Name, car.CarBrand, car.Free, car.Client.ID)
 	if err := row.Scan(&id); err != nil {
-		err := tx.Rollback()
-		if err != nil {
-			return 0, err
+		if err := tx.Rollback(); err != nil {
+
+			log.Error(err)
+			return "", err
 		}
-		return 0, err
+		return "", err
 	}
 	return id, tx.Commit()
 }
@@ -71,10 +73,34 @@ func (r *CarsPostgres) Update(carId int, input car.UpdateListInput) error {
 		carsTable, setQuery, carsTable, argId)
 	args = append(args, carId)
 
-	logrus.Debugf("updateQuery: %s", query)
-	logrus.Debugf("args: %s", args)
+	log.Debugf("updateQuery: %s", query)
+	log.Debugf("args: %s", args)
 
 	_, err := r.db.Exec(query, args...)
 	return err
 
+}
+
+type CarAndClientName struct {
+	carName    string
+	clientName string
+}
+
+func (r *CarsPostgres) GetAllCarsAndClients() (list []CarAndClientName, err error) {
+	var carAndClientName CarAndClientName
+	var carAndClientNames []CarAndClientName
+	createListQuery := fmt.Sprintf("SELECT crs.name, cls.name FROM %s crs INNER JOIN %s cls on crs.clientid = cls.id", carsTable, clientTable)
+	rows, err := r.db.Queryx(createListQuery)
+	if err != nil {
+
+	}
+	for rows.Next() {
+		if err := rows.Scan(&carAndClientName.carName, &carAndClientName.clientName); err != nil {
+			log.Errorf()
+			return nil, err
+		}
+		carAndClientNames = append(carAndClientNames, carAndClientName)
+	}
+	//fmt.Printf("%+v", lists)
+	return carAndClientNames, nil
 }

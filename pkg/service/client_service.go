@@ -29,5 +29,4 @@ func (s *ClientsService) Update(clientId string, input client.UpdateListInput) e
 		return err
 	}
 	return s.repo.Update(clientId, input)
-
 }

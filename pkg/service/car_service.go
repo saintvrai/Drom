@@ -12,7 +12,7 @@ type CarsService struct {
 func NewCarsService(repo repository.Car) *CarsService {
 	return &CarsService{repo: repo}
 }
-func (s *CarsService) Create(car car.Car) (int, error) {
+func (s *CarsService) Create(car car.Car) (string, error) {
 	return s.repo.Create(car)
 }
 func (s *CarsService) GetAll() ([]car.Car, error) {
@@ -29,5 +29,7 @@ func (s *CarsService) Update(carId int, input car.UpdateListInput) error {
 		return err
 	}
 	return s.repo.Update(carId, input)
-
+}
+func (s *CarsService) GetAllCarsAndClients() ([]car.Car, error) {
+	return s.repo.GetAllCarsAndClients()
 }
