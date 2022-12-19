@@ -30,6 +30,12 @@ func (s *CarsService) Update(carId int, input car.UpdateListInput) error {
 	}
 	return s.repo.Update(carId, input)
 }
-func (s *CarsService) GetAllCarsAndClients() ([]car.Car, error) {
+
+type CarAndClientName struct {
+	carName    string
+	clientName string
+}
+
+func (s *CarsService) GetAllCarsAndClients() (list []car.CarAndClientName, err error) {
 	return s.repo.GetAllCarsAndClients()
 }

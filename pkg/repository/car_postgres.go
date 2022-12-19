@@ -81,26 +81,20 @@ func (r *CarsPostgres) Update(carId int, input car.UpdateListInput) error {
 
 }
 
-type CarAndClientName struct {
-	carName    string
-	clientName string
-}
-
-func (r *CarsPostgres) GetAllCarsAndClients() (list []CarAndClientName, err error) {
-	var carAndClientName CarAndClientName
-	var carAndClientNames []CarAndClientName
+func (r *CarsPostgres) GetAllCarsAndClients() (list []car.CarAndClientName, err error) {
+	var carAndClientName car.CarAndClientName
+	var carAndClientNames []car.CarAndClientName
 	createListQuery := fmt.Sprintf("SELECT crs.name, cls.name FROM %s crs INNER JOIN %s cls on crs.clientid = cls.id", carsTable, clientTable)
 	rows, err := r.db.Queryx(createListQuery)
 	if err != nil {
 
 	}
 	for rows.Next() {
-		if err := rows.Scan(&carAndClientName.carName, &carAndClientName.clientName); err != nil {
-			log.Errorf()
+		if err := rows.Scan(&carAndClientName.CarName, &carAndClientName.ClientName); err != nil {
+			log.Errorf(err.Error())
 			return nil, err
 		}
 		carAndClientNames = append(carAndClientNames, carAndClientName)
 	}
-	//fmt.Printf("%+v", lists)
 	return carAndClientNames, nil
 }

@@ -16,6 +16,10 @@ type UpdateListInput struct {
 	Name     *string `json:"name"`
 	CarBrand *string `json:"carbrand"`
 }
+type CarAndClientName struct {
+	CarName    *string `json:"carname"`
+	ClientName *string `json:"clientname"`
+}
 
 func (i UpdateListInput) Validate() error {
 	if i.Name == nil && i.CarBrand == nil {

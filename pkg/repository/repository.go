@@ -17,7 +17,7 @@ type Car interface {
 	GetById(carId int) (car.Car, error)
 	Delete(carId int) error
 	Update(carId int, input car.UpdateListInput) error
-	GetAllCarsAndClients() ([]car.Car, error)
+	GetAllCarsAndClients() (list []car.CarAndClientName, err error)
 }
 type Client interface {
 	Create(client client.Client) (string, error)

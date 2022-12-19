@@ -3,7 +3,6 @@ package handler
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/saintvrai/Drom/internal/car"
-	"github.com/saintvrai/Drom/internal/client"
 	"net/http"
 	"strconv"
 )
@@ -152,16 +151,12 @@ func (h *Handler) deleteById(c *gin.Context) {
 
 }
 
-type getAllCarsAndClientsResponse struct {
-	CarData    []car.Car       `json:"carData"`
-	ClientData []client.Client `json:"clientData"`
-}
-
 func (h *Handler) getAllCarsAndClients(c *gin.Context) {
+
 	list, err := h.services.Car.GetAllCarsAndClients()
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	c.JSON(http.StatusOK, list[0])
+	c.JSON(http.StatusOK, list)
 }
