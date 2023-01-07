@@ -2,25 +2,40 @@ package repository
 
 import (
 	"github.com/jmoiron/sqlx"
-	"github.com/saintvrai/Drom"
+	"github.com/saintvrai/Drom/internal/car"
+	"github.com/saintvrai/Drom/internal/client"
+	"github.com/saintvrai/Drom/internal/user"
 )
 
-type CarList interface {
-	Create(list Drom.Car) (int, error)
-	GetAll() ([]Drom.Car, error)
-	GetById(listId int) (Drom.Car, error)
-	Delete(listId int) error
-	Update(lisId int, input Drom.UpdateListInput) error
+type Authorization interface {
+	CreateUser(user user.User) (string, error)
+	GetUser(username, password string) (user.User, error)
 }
-type CarItem interface {
+type Car interface {
+	Create(car car.Car) (string, error)
+	GetAll() ([]car.Car, error)
+	GetById(carId int) (car.Car, error)
+	Delete(carId int) error
+	Update(carId int, input car.UpdateListInput) error
+	GetAllCarsAndClients() (list []car.CarAndClientName, err error)
+}
+type Client interface {
+	Create(client client.Client) (string, error)
+	GetAll() ([]client.Client, error)
+	GetById(clientId string) (client.Client, error)
+	Delete(clientId string) error
+	Update(clientId string, input client.UpdateListInput) error
 }
 type Repository struct {
-	CarItem
-	CarList
+	Authorization
+	Client
+	Car
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
-		CarList: NewCarsListPostgres(db),
+		Car:           NewCarsPostgres(db),
+		Client:        NewClientsPostgres(db),
+		Authorization: NewAuthPostgres(db),
 	}
 }

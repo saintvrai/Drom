@@ -1,26 +1,42 @@
 package service
 
 import (
-	"github.com/saintvrai/Drom"
+	"github.com/saintvrai/Drom/internal/car"
+	"github.com/saintvrai/Drom/internal/client"
+	"github.com/saintvrai/Drom/internal/user"
 	"github.com/saintvrai/Drom/pkg/repository"
 )
 
-type CarList interface {
-	Create(car Drom.Car) (int, error)
-	GetAll() ([]Drom.Car, error)
-	GetById(listId int) (Drom.Car, error)
-	Delete(listId int) error
-	Update(lisId int, input Drom.UpdateListInput) error
+type Authorization interface {
+	CreateUser(user user.User) (string, error)
+	GenerateToken(username, password string) (string, error)
+	ParseToken(token string) (string, error)
 }
-type CarItem interface {
+type Car interface {
+	Create(car car.Car) (string, error)
+	GetAll() ([]car.Car, error)
+	GetById(carId int) (car.Car, error)
+	Delete(carId int) error
+	Update(carId int, input car.UpdateListInput) error
+	GetAllCarsAndClients() (list []car.CarAndClientName, err error)
+}
+type Client interface {
+	Create(client client.Client) (string, error)
+	GetAll() ([]client.Client, error)
+	GetById(clientId string) (client.Client, error)
+	Delete(clientId string) error
+	Update(clientId string, input client.UpdateListInput) error
 }
 type Service struct {
-	CarItem
-	CarList
+	Car
+	Client
+	Authorization
 }
 
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
-		CarList: NewCarsListService(repos.CarList),
+		NewCarsService(repos.Car),
+		NewClientService(repos.Client),
+		NewAuthService(repos.Authorization),
 	}
 }

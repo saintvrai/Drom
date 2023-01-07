@@ -6,8 +6,9 @@ import (
 )
 
 const (
-	carsTable     = "cars"
-	carsListTable = "cars_lists"
+	carsTable   = "cars"
+	clientTable = "clients"
+	usersTable  = "users"
 )
 
 type Config struct {

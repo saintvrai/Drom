@@ -18,15 +18,29 @@ func NewHandler(services *service.Service) *Handler {
 func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.New()
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	api := router.Group("/api")
+	auth := router.Group("/auth")
 	{
-		lists := api.Group("/lists")
+		auth.POST("/sign-up", h.signUp)
+		auth.POST("/sign-in", h.signIn)
+	}
+	api := router.Group("/api", h.userIdentity)
+	{
+		cars := api.Group("/cars")
 		{
-			lists.POST("/", h.createCar)
-			lists.GET("/", h.getCarsList)
-			lists.GET("/:id", h.getCarById)
-			lists.PUT("/:id", h.updateCarById)
-			lists.DELETE("/:id", h.deleteById)
+			cars.POST("/", h.createCar)
+			cars.GET("/", h.getCarsList)
+			cars.GET("/:id", h.getCarById)
+			cars.PUT("/:id", h.updateCarById)
+			cars.DELETE("/:id", h.deleteById)
+			cars.GET("/getall", h.getAllCarsAndClients)
+		}
+		clients := api.Group("/clients")
+		{
+			clients.POST("/", h.createClient)
+			clients.GET("/", h.getClients)
+			clients.GET("/:id", h.getClientById)
+			clients.PUT("/:id", h.updateClientById)
+			clients.DELETE("/:id", h.deleteClientById)
 		}
 	}
 	return router

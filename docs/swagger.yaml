@@ -63,10 +63,10 @@ paths:
     post:
       consumes:
       - application/json
-      description: create one car to Drom database
-      operationId: create-car
+      description: create one Drom to Drom database
+      operationId: create-Drom
       parameters:
-      - description: car info
+      - description: Drom info
         in: body
         name: input
         required: true
@@ -98,12 +98,55 @@ paths:
       summary: Create Car
       tags:
       - cars
-  /api/lists/:id:
+  /api/lists/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete Drom by id from database
+      operationId: delete-Drom-by-id
+      parameters:
+      - description: Car ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Drom.Car'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Delete Car By Id
+      tags:
+      - cars
     get:
       consumes:
       - application/json
-      description: get car by id from database
-      operationId: get-car-by-id
+      description: get Drom by id from database
+      operationId: get-Drom-by-id
+      parameters:
+      - description: Car ID
+        in: path
+        name: id
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
@@ -128,6 +171,49 @@ paths:
           schema:
             $ref: '#/definitions/handler.errorResponse'
       summary: Get Car By Id
+      tags:
+      - cars
+    put:
+      consumes:
+      - application/json
+      description: update Drom by id from database
+      operationId: update-Drom-by-id
+      parameters:
+      - description: Car ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: DromCar
+        in: body
+        name: Drom
+        required: true
+        schema:
+          $ref: '#/definitions/Drom.Car'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Drom.Car'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Update Car By Id
       tags:
       - cars
 swagger: "2.0"
